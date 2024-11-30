@@ -1,123 +1,78 @@
-import { Button } from "@/components/ui/button"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { ChevronDown, Hash, Volume2, Settings, Mic, Headphones, Lock, Megaphone, Plus } from 'lucide-react'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import Image from "next/image"
+import { ChevronDown, Hash, Volume2, Settings, Plus, Headphones, Mic, Search } from 'lucide-react'
+import { Separator } from "@/components/ui/separator"
 
 export function ChannelSidebar() {
   return (
-    <div className="flex w-60 flex-col bg-[#2B2D31]">
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="relative h-12 w-full justify-start rounded-none border-b border-[#1F2023] px-4 font-semibold text-white hover:bg-[#34373C]">
-            Midnight Discord
-            <ChevronDown className="ml-auto h-4 w-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56">
-          <DropdownMenuItem>Server Boost</DropdownMenuItem>
-          <DropdownMenuItem>Invite People</DropdownMenuItem>
-          <DropdownMenuItem>Server Settings</DropdownMenuItem>
-          <DropdownMenuItem>Create Channel</DropdownMenuItem>
-          <DropdownMenuItem>Create Category</DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem className="text-red-500">Leave Server</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-      <ScrollArea className="flex-1 px-2">
-        <div className="mt-4">
-          <div className="mb-1 flex items-center justify-between px-2 text-xs font-semibold uppercase text-[#949BA4]">
-            <span>Information</span>
-            <ChevronDown className="h-3 w-3" />
-          </div>
-          <div className="space-y-[2px]">
-            <Button variant="ghost" className="w-full justify-start gap-2 rounded-sm px-2 text-[#949BA4] hover:bg-[#35373C] hover:text-white">
-              <Megaphone className="h-4 w-4" />
-              Announcements
-            </Button>
-            <Button variant="ghost" className="w-full justify-start gap-2 rounded-sm px-2 text-[#949BA4] hover:bg-[#35373C] hover:text-white">
-              <Lock className="h-4 w-4" />
-              Rules
-            </Button>
+    <div className="flex w-60 flex-col bg-[#2b2d31] overflow-hidden">
+      <button className="flex h-12 items-center px-4 font-semibold hover:bg-[#35373C]">
+        Talki
+        <ChevronDown className="ml-auto h-4 w-4" />
+      </button>
+      <Separator className="h-[2px] bg-[#1e1f22]" />
+      <div className="mx-2 my-2">
+        <div className="relative">
+          <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-400" />
+          <input
+            type="text"
+            placeholder="Search"
+            className="w-full rounded bg-[#1e1f22] py-1 pl-8 pr-4 text-sm text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
+        </div>
+      </div>
+      <div className="flex-1 overflow-y-auto p-2">
+        <div className="mb-2">
+          <button className="flex w-full items-center gap-1 rounded px-1 py-1 text-xs font-semibold uppercase text-gray-400 hover:text-gray-100">
+            <ChevronDown className="h-3 w-3" /> Text Channels
+          </button>
+          <div className="mt-1 space-y-0.5">
+            <button className="flex w-full items-center gap-1.5 rounded px-2 py-1 text-gray-100 bg-[#35373C]">
+              <Hash className="h-5 w-5 text-gray-400" /> general
+            </button>
+            <button className="flex w-full items-center gap-1.5 rounded px-2 py-1 text-gray-400 hover:bg-[#35373C] hover:text-gray-100">
+              <Hash className="h-5 w-5 text-gray-400" /> polls
+            </button>
+            <button className="flex w-full items-center gap-1.5 rounded px-2 py-1 text-gray-400 hover:bg-[#35373C] hover:text-gray-100">
+              <Hash className="h-5 w-5 text-gray-400" /> snippets
+            </button>
+            <button className="flex w-full items-center gap-1.5 rounded px-2 py-1 text-gray-400 hover:bg-[#35373C] hover:text-gray-100">
+              <Hash className="h-5 w-5 text-gray-400" /> github
+            </button>
+            <button className="flex w-full items-center gap-1.5 rounded px-2 py-1 text-gray-400 hover:bg-[#35373C] hover:text-gray-100">
+              <Hash className="h-5 w-5 text-gray-400" /> testing
+            </button>
           </div>
         </div>
-        <div className="mt-4">
-          <div className="mb-1 flex items-center justify-between px-2 text-xs font-semibold uppercase text-[#949BA4]">
-            <span>Text Channels</span>
-            <Button variant="ghost" size="icon" className="h-4 w-4 hover:bg-transparent">
-              <Plus className="h-4 w-4" />
-            </Button>
-          </div>
-          <div className="space-y-[2px]">
-            <Button variant="ghost" className="w-full justify-start gap-2 rounded-sm px-2 text-[#949BA4] hover:bg-[#35373C] hover:text-white">
-              <Hash className="h-4 w-4" />
-              general
-            </Button>
-            <Button variant="ghost" className="w-full justify-start gap-2 rounded-sm bg-[#404249] px-2 text-white">
-              <Hash className="h-4 w-4" />
-              development
-            </Button>
-            <Button variant="ghost" className="w-full justify-start gap-2 rounded-sm px-2 text-[#949BA4] hover:bg-[#35373C] hover:text-white">
-              <Hash className="h-4 w-4" />
-              design
-            </Button>
-            <Button variant="ghost" className="w-full justify-start gap-2 rounded-sm px-2 text-[#949BA4] hover:bg-[#35373C] hover:text-white">
-              <Hash className="h-4 w-4" />
-              memes
-            </Button>
+        <div>
+          <button className="flex w-full items-center gap-1 rounded px-1 py-1 text-xs font-semibold uppercase text-gray-400 hover:text-gray-100">
+            <ChevronDown className="h-3 w-3" /> Voice Channels
+            <Plus className="ml-auto h-4 w-4" />
+          </button>
+          <div className="mt-1 space-y-0.5">
+            <button className="flex w-full items-center gap-1.5 rounded px-2 py-1 text-gray-400 hover:bg-[#35373C] hover:text-gray-100">
+              <Volume2 className="h-5 w-5 text-green-400" /> General
+            </button>
           </div>
         </div>
-        <div className="mt-4">
-          <div className="mb-1 flex items-center justify-between px-2 text-xs font-semibold uppercase text-[#949BA4]">
-            <span>Voice Channels</span>
-            <Button variant="ghost" size="icon" className="h-4 w-4 hover:bg-transparent">
-              <Plus className="h-4 w-4" />
-            </Button>
-          </div>
-          <div className="space-y-[2px]">
-            <Button variant="ghost" className="w-full justify-start gap-2 rounded-sm px-2 text-[#949BA4] hover:bg-[#35373C] hover:text-white">
-              <Volume2 className="h-4 w-4" />
-              General
-            </Button>
-            <Button variant="ghost" className="w-full justify-start gap-2 rounded-sm px-2 text-[#949BA4] hover:bg-[#35373C] hover:text-white">
-              <Volume2 className="h-4 w-4" />
-              Meeting Room
-            </Button>
-            <Button variant="ghost" className="w-full justify-start gap-2 rounded-sm px-2 text-[#949BA4] hover:bg-[#35373C] hover:text-white">
-              <Volume2 className="h-4 w-4" />
-              Chill Zone
-            </Button>
-          </div>
+      </div>
+      <div className="flex h-[52px] items-center gap-2 bg-[#232428] p-2">
+        <img
+          alt="User avatar"
+          className="h-8 w-8 rounded-full"
+          src="/placeholder.svg?height=32&width=32"
+        />
+        <div className="flex-1 text-sm">
+          <div className="font-semibold">User</div>
+          <div className="text-xs text-gray-400">#0000</div>
         </div>
-      </ScrollArea>
-      <div className="mt-auto flex h-[52px] items-center justify-between bg-[#232428] px-2">
-        <div className="flex items-center gap-2">
-          <div className="relative h-8 w-8">
-            <Image src="/placeholder-user.jpg" alt="User avatar" className="rounded-full" />
-            <div className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-[#232428] bg-green-500" />
-          </div>
-          <div>
-            <div className="text-sm font-semibold text-white">johndoe</div>
-            <div className="text-xs text-[#949BA4]">#1234</div>
-          </div>
-        </div>
-        <div className="flex gap-1">
-          <Button variant="ghost" size="icon" className="h-8 w-8 text-[#949BA4]">
-            <Mic className="h-4 w-4" />
-          </Button>
-          <Button variant="ghost" size="icon" className="h-8 w-8 text-[#949BA4]">
-            <Headphones className="h-4 w-4" />
-          </Button>
-          <Button variant="ghost" size="icon" className="h-8 w-8 text-[#949BA4]">
-            <Settings className="h-4 w-4" />
-          </Button>
-        </div>
+        <button className="hover:text-gray-100">
+          <Mic className="h-5 w-5" />
+        </button>
+        <button className="hover:text-gray-100">
+          <Headphones className="h-5 w-5" />
+        </button>
+        <button className="hover:text-gray-100">
+          <Settings className="h-5 w-5" />
+        </button>
       </div>
     </div>
   )

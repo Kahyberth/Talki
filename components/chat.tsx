@@ -1,181 +1,109 @@
-import { Button } from "@/components/ui/button"
+import { Bell, Hash, Pin, Users, Gift, Sticker, GiftIcon, PlusCircle, Send, MessageSquare } from 'lucide-react'
 import { Input } from "@/components/ui/input"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Hash, Gift, Sticker, ImagePlus, Smile, Bell, Pin, Users, Inbox, HelpCircle, AtSign, Bookmark, LinkIcon as ThreadIcon, PlusCircle } from 'lucide-react'
-import { Avatar } from "@/components/ui/avatar"
-import { AvatarImage, AvatarFallback } from "@/components/ui/avatar"
+import { Button } from "@/components/ui/button"
+import { Separator } from "@/components/ui/separator"
 
 export function Chat() {
   return (
-    <div className="flex flex-1 flex-col bg-[#313338]">
-      <header className="flex h-12 items-center justify-between border-b border-[#1F2023] px-4">
-        <div className="flex items-center gap-2">
-          <Hash className="h-5 w-5 text-[#949BA4]" />
-          <span className="font-semibold text-white">general</span>
-          <span className="text-sm text-[#949BA4]">Welcome to #general!</span>
-        </div>
-        <div className="flex items-center gap-4">
-          <Button variant="ghost" size="icon" className="h-6 w-6 text-[#949BA4]">
-            <ThreadIcon className="h-5 w-5" />
+    <div className="flex flex-1 flex-col overflow-hidden">
+      <header className="flex h-12 items-center px-4 shadow-md">
+        <Hash className="mr-2 h-6 w-6 text-gray-400" />
+        <h2 className="font-semibold">general</h2>
+        <Separator orientation="vertical" className="mx-4 h-6" />
+        <p className="text-sm text-gray-400">General chat for general things</p>
+        <div className="ml-auto flex items-center gap-4">
+          <Button variant="ghost" size="icon">
+            <Bell className="h-5 w-5 text-gray-400" />
           </Button>
-          <Button variant="ghost" size="icon" className="h-6 w-6 text-[#949BA4]">
-            <Bell className="h-5 w-5" />
+          <Button variant="ghost" size="icon">
+            <Pin className="h-5 w-5 text-gray-400" />
           </Button>
-          <Button variant="ghost" size="icon" className="h-6 w-6 text-[#949BA4]">
-            <Pin className="h-5 w-5" />
+          <Button variant="ghost" size="icon">
+            <Users className="h-5 w-5 text-gray-400" />
           </Button>
-          <Button variant="ghost" size="icon" className="h-6 w-6 text-[#949BA4]">
-            <Users className="h-5 w-5" />
-          </Button>
-          <Input className="h-6 w-36 bg-[#1E1F22] text-xs text-white" placeholder="Search" />
-          <Button variant="ghost" size="icon" className="h-6 w-6 text-[#949BA4]">
-            <Inbox className="h-5 w-5" />
-          </Button>
-          <Button variant="ghost" size="icon" className="h-6 w-6 text-[#949BA4]">
-            <HelpCircle className="h-5 w-5" />
+          <Input
+            className="h-6 w-36 bg-[#1e1f22]"
+            placeholder="Search"
+          />
+          <Button variant="ghost" size="icon">
+            <MessageSquare className="h-5 w-5" />
           </Button>
         </div>
       </header>
-      <ScrollArea className="flex-1">
-        <div className="flex flex-col gap-4 p-4">
-          <div className="flex gap-4">
-            <Avatar className="h-10 w-10 rounded-full">
-              <AvatarImage src="/placeholder.svg" />
-              <AvatarFallback>Y</AvatarFallback>
-            </Avatar>
-            <div className="flex-1">
-              <div className="flex items-baseline gap-2">
-                <span className="font-semibold text-[#DBDEE1]">yean</span>
-                <span className="text-xs text-[#949BA4]">Today at 2:40 PM</span>
-              </div>
-              <p className="text-[#DBDEE1]">i changed some variables to link the status indicator colors to the window control colors</p>
+      <div className="flex-1 overflow-y-auto p-4">
+        <div className="flex items-start gap-4 py-2">
+          <img
+            alt="User avatar"
+            className="h-10 w-10 rounded-full"
+            src="/placeholder.svg?height=40&width=40"
+          />
+          <div>
+            <div className="flex items-baseline gap-2">
+              <span className="font-semibold text-indigo-400">yean</span>
+              <span className="text-xs text-gray-400">Today at 2:40 PM</span>
             </div>
-          </div>
-          
-          <div className="flex gap-4">
-            <Avatar className="h-10 w-10 rounded-full">
-              <AvatarImage src="/placeholder.svg" />
-              <AvatarFallback>E</AvatarFallback>
-            </Avatar>
-            <div className="flex-1">
-              <div className="flex items-baseline gap-2">
-                <span className="font-semibold text-[#D381E9]">esme</span>
-                <span className="text-xs text-[#949BA4]">Today at 2:40 PM</span>
-              </div>
-              <p className="text-[#DBDEE1]">yeah i figured as much cuz it doesn&apos;t work on the original either</p>
-            </div>
-          </div>
-          
-          <div className="flex gap-4">
-            <Avatar className="h-10 w-10 rounded-full">
-              <AvatarImage src="/placeholder.svg" />
-              <AvatarFallback>E</AvatarFallback>
-            </Avatar>
-            <div className="flex-1">
-              <div className="flex items-baseline gap-2">
-                <span className="font-semibold text-[#D381E9]">esme</span>
-                <span className="text-xs text-[#949BA4]">Today at 2:40 PM</span>
-              </div>
-              <div className="rounded-md bg-[#2B2D31] p-4">
-                <div className="flex items-center gap-2 text-[#949BA4]">
-                  <span>@refact0r</span>
-                  <span>i changed some variables to link the status indicator colors to the window control colors</span>
-                </div>
-              </div>
-              <p className="mt-1 text-[#DBDEE1]">i was wondering why the status indicator plugin doesn&apos;t overwrite correctly</p>
-            </div>
-          </div>
-          
-          <div className="flex gap-4">
-            <Avatar className="h-10 w-10 rounded-full">
-              <AvatarImage src="/placeholder.svg" />
-              <AvatarFallback>R</AvatarFallback>
-            </Avatar>
-            <div className="flex-1">
-              <div className="flex items-baseline gap-2">
-                <span className="font-semibold text-[#5865F2]">refact0r</span>
-                <span className="text-xs text-[#949BA4]">Today at 2:41 PM</span>
-              </div>
-              <p className="text-[#DBDEE1]">yep im fixing all the flavors rn</p>
-            </div>
-          </div>
-          
-          <div className="flex gap-4">
-            <Avatar className="h-10 w-10 rounded-full">
-              <AvatarImage src="/placeholder.svg" />
-              <AvatarFallback>E</AvatarFallback>
-            </Avatar>
-            <div className="flex-1">
-              <div className="flex items-baseline gap-2">
-                <span className="font-semibold text-[#D381E9]">esme</span>
-                <span className="text-xs text-[#949BA4]">Today at 2:41 PM</span>
-              </div>
-              <p className="text-[#DBDEE1]">alrighty</p>
-            </div>
-          </div>
-          
-          <div className="flex gap-4">
-            <Avatar className="h-10 w-10 rounded-full">
-              <AvatarImage src="/placeholder.svg" />
-              <AvatarFallback>R</AvatarFallback>
-            </Avatar>
-            <div className="flex-1">
-              <div className="flex items-baseline gap-2">
-                <span className="font-semibold text-[#5865F2]">refact0r</span>
-                <span className="text-xs text-[#949BA4]">Today at 2:51 PM</span>
-              </div>
-              <p className="text-[#DBDEE1]">
-                <span className="text-[#D381E9]">@esme</span> how did you get these decimal hsl colors? i assume you&apos;re converting them from the rgb hex somehow
-              </p>
-              <div className="mt-1 rounded-md bg-[#2B2D31] p-2">
-                <code className="text-[#DBDEE1]">hsl(343.6,46.7%,67.6%);</code>
-              </div>
-            </div>
-          </div>
-          {/* New typing indicator */}
-          <div className="flex items-center gap-2 text-sm text-[#949BA4]">
-            <div className="flex gap-1">
-              <span className="animate-bounce">•</span>
-              <span className="animate-bounce delay-100">•</span>
-              <span className="animate-bounce delay-200">•</span>
-            </div>
-            <span>Someone is typing...</span>
+            <p>i changed some variables to link the status indicator colors to the window control colors</p>
           </div>
         </div>
-      </ScrollArea>
+        <div className="flex items-start gap-4 py-2">
+          <img
+            alt="User avatar"
+            className="h-10 w-10 rounded-full"
+            src="/placeholder.svg?height=40&width=40"
+          />
+          <div>
+            <div className="flex items-baseline gap-2">
+              <span className="font-semibold text-rose-400">esme</span>
+              <span className="text-xs text-gray-400">Today at 2:40 PM</span>
+            </div>
+            <p>yeah i figured as much cuz it doesn't work on the original either</p>
+          </div>
+        </div>
+        <div className="ml-14 mt-1 rounded-md bg-[#2b2d31] p-4">
+          <div className="flex items-center gap-2 text-indigo-400">
+            <span className="font-semibold">@refact0r</span>
+            <span className="text-xs text-gray-400">Today at 2:40 PM</span>
+          </div>
+          <p className="mt-1 text-gray-300">i changed some variables to link the status indicator colors to the window control colors</p>
+        </div>
+        <div className="flex items-start gap-4 py-2">
+          <img
+            alt="User avatar"
+            className="h-10 w-10 rounded-full"
+            src="/placeholder.svg?height=40&width=40"
+          />
+          <div>
+            <div className="flex items-baseline gap-2">
+              <span className="font-semibold text-rose-400">esme</span>
+              <span className="text-xs text-gray-400">Today at 2:40 PM</span>
+            </div>
+            <p>i was wondering why the status indicator plugin doesn't overwrite correctly</p>
+          </div>
+        </div>
+      </div>
       <div className="p-4">
-        <div className="relative">
+        <div className="flex items-center gap-2 rounded-lg bg-[#383a40] p-2">
+          <Button variant="ghost" size="icon" className="shrink-0">
+            <PlusCircle className="h-5 w-5" />
+          </Button>
           <Input
-            className="bg-[#383A40] border-none pl-4 pr-24 py-3 text-[#DBDEE1] placeholder-[#949BA4]"
+            className="border-0 bg-transparent focus-visible:ring-0"
             placeholder="Message #general"
           />
-          <div className="absolute right-2 top-2 flex items-center gap-1">
-            <Button variant="ghost" size="icon" className="h-6 w-6 text-[#949BA4]">
-              <PlusCircle className="h-5 w-5" />
+          <div className="flex shrink-0 items-center gap-2">
+            <Button variant="ghost" size="icon">
+              <Gift className="h-5 w-5 text-pink-400" />
             </Button>
-            <Button variant="ghost" size="icon" className="h-6 w-6 text-[#949BA4]">
-              <Gift className="h-5 w-5" />
+            <Button variant="ghost" size="icon">
+              <GiftIcon className="h-5 w-5 text-blue-400" />
             </Button>
-            <Button variant="ghost" size="icon" className="h-6 w-6 text-[#949BA4]">
-              <ImagePlus className="h-5 w-5" />
+            <Button variant="ghost" size="icon">
+              <Sticker className="h-5 w-5 text-yellow-400" />
             </Button>
-            <Button variant="ghost" size="icon" className="h-6 w-6 text-[#949BA4]">
-              <Sticker className="h-5 w-5" />
-            </Button>
-            <Button variant="ghost" size="icon" className="h-6 w-6 text-[#949BA4]">
-              <Smile className="h-5 w-5" />
+            <Button variant="ghost" size="icon">
+              <Send className="h-5 w-5 text-indigo-400" />
             </Button>
           </div>
-        </div>
-        <div className="mt-2 flex items-center gap-2 text-xs text-[#949BA4]">
-          <Button variant="ghost" size="sm" className="h-6 px-2 text-[#949BA4] hover:bg-[#35373C] hover:text-white">
-            <AtSign className="mr-1 h-4 w-4" />
-            Mention
-          </Button>
-          <Button variant="ghost" size="sm" className="h-6 px-2 text-[#949BA4] hover:bg-[#35373C] hover:text-white">
-            <Bookmark className="mr-1 h-4 w-4" />
-            Saved Messages
-          </Button>
         </div>
       </div>
     </div>
