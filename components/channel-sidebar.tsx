@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { ChevronDown, Hash, Volume2, Settings, Mic, Headphones, Bell, Lock, Megaphone, Plus, UserPlus } from 'lucide-react'
+import { ChevronDown, Hash, Volume2, Settings, Mic, Headphones, Lock, Megaphone, Plus } from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,6 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import Image from "next/image"
 
 export function ChannelSidebar() {
   return (
@@ -98,7 +99,7 @@ export function ChannelSidebar() {
       <div className="mt-auto flex h-[52px] items-center justify-between bg-[#232428] px-2">
         <div className="flex items-center gap-2">
           <div className="relative h-8 w-8">
-            <img src="/placeholder-user.jpg" alt="User avatar" className="rounded-full" />
+            <Image src="/placeholder-user.jpg" alt="User avatar" className="rounded-full" />
             <div className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-[#232428] bg-green-500" />
           </div>
           <div>

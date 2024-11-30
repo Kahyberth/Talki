@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Search, X, Compass, Gamepad2, Music, Film, Book, Coffee } from 'lucide-react'
+import Image from "next/image";
 
 interface ServerDiscoveryProps {
   onClose: () => void;
@@ -47,7 +48,7 @@ export function ServerDiscovery({ onClose }: ServerDiscoveryProps) {
           <div className="grid grid-cols-2 gap-4">
             {featuredServers.map((server) => (
               <div key={server.name} className="rounded-lg bg-[#232428] p-3">
-                <img src={server.image} alt={server.name} className="mb-2 h-16 w-full rounded-md object-cover" />
+                <Image src={server.image} alt={server.name} className="mb-2 h-16 w-full rounded-md object-cover" />
                 <h4 className="text-sm font-semibold text-white">{server.name}</h4>
                 <p className="text-xs text-[#B5BAC1]">{server.members.toLocaleString()} members</p>
               </div>

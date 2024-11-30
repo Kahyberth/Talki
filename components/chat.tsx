@@ -62,7 +62,7 @@ export function Chat() {
                 <span className="font-semibold text-[#D381E9]">esme</span>
                 <span className="text-xs text-[#949BA4]">Today at 2:40 PM</span>
               </div>
-              <p className="text-[#DBDEE1]">yeah i figured as much cuz it doesn't work on the original either</p>
+              <p className="text-[#DBDEE1]">yeah i figured as much cuz it doesn&apos;t work on the original either</p>
             </div>
           </div>
           
@@ -82,7 +82,7 @@ export function Chat() {
                   <span>i changed some variables to link the status indicator colors to the window control colors</span>
                 </div>
               </div>
-              <p className="mt-1 text-[#DBDEE1]">i was wondering why the status indicator plugin doesn't overwrite correctly</p>
+              <p className="mt-1 text-[#DBDEE1]">i was wondering why the status indicator plugin doesn&apos;t overwrite correctly</p>
             </div>
           </div>
           
@@ -125,7 +125,7 @@ export function Chat() {
                 <span className="text-xs text-[#949BA4]">Today at 2:51 PM</span>
               </div>
               <p className="text-[#DBDEE1]">
-                <span className="text-[#D381E9]">@esme</span> how did you get these decimal hsl colors? i assume you're converting them from the rgb hex somehow
+                <span className="text-[#D381E9]">@esme</span> how did you get these decimal hsl colors? i assume you&apos;re converting them from the rgb hex somehow
               </p>
               <div className="mt-1 rounded-md bg-[#2B2D31] p-2">
                 <code className="text-[#DBDEE1]">hsl(343.6,46.7%,67.6%);</code>
