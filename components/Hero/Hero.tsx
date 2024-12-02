@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Download, Globe, Menu, X } from 'lucide-react'
 import AuthComponent from '@/components/Auth/AuthComponent'
-import LogoutButton from '@/components/logout'
+
 
 const Hero = () => {
   const navbarRef = useRef<HTMLDivElement | null>(null)
