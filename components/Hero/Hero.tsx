@@ -1,20 +1,36 @@
 'use client'
-
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Download, Globe, Menu, X } from 'lucide-react'
+import { Download, Globe, Music, VolumeX } from 'lucide-react'
 import AuthComponent from '@/components/Auth/AuthComponent'
-
+import Image from 'next/image'
 
 const Hero = () => {
   const navbarRef = useRef<HTMLDivElement | null>(null)
   const heroContentRef = useRef<HTMLDivElement | null>(null)
   const titleRef = useRef<HTMLHeadingElement | null>(null)
   const subtitleRef = useRef<HTMLParagraphElement | null>(null)
+  const videoRef = useRef<HTMLVideoElement | null>(null)
+  const audioRef = useRef<HTMLAudioElement | null>(null)
+
+  // Array de videos
+  const videoSources = [
+    { src: '/videos/hero-4.mp4', type: 'video/mp4' },
+    { src: '/videos/hero-3.mp4', type: 'video/mp4' },
+    { src: '/videos/hero-2.mp4', type: 'video/mp4' },
+    { src: '/videos/hero-1.mp4', type: 'video/mp4' },
+    { src: '/videos/not-auth.mp4', type: 'video/mp4' },
+  ];
+
+  // Estados
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+  const [isAudioPlaying, setIsAudioPlaying] = useState(false); // Iniciar en falso para evitar reproducción automática
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
 
   useEffect(() => {
+    // Animaciones del navbar y contenido
     gsap.from(navbarRef.current, {
       duration: 1,
       y: -100,
@@ -29,7 +45,7 @@ const Hero = () => {
       delay: 0.5,
     })
 
-    // Animación del título con efecto de glitch
+    // Animación del título con efecto de glitch simplificado
     if (titleRef.current) {
       const letters = titleRef.current.querySelectorAll('.letter')
       gsap.fromTo(
@@ -44,40 +60,121 @@ const Hero = () => {
         }
       )
 
-      // Efecto de glitch
       gsap.to(letters, {
         duration: 0.1,
-        x: (index) => (Math.random() - 0.5) * 20,
-        y: (index) => (Math.random() - 0.5) * 20,
-        rotation: (index) => (Math.random() - 0.5) * 20,
-        opacity: (index) => Math.random(),
+        x: () => (Math.random() - 0.5) * 5, // Reducido para mejor rendimiento
+        y: () => (Math.random() - 0.5) * 5,
+        rotation: () => (Math.random() - 0.5) * 5,
+        opacity: () => Math.random(),
         repeat: -1,
-        repeatDelay: Math.random() * 2 + 1,
+        repeatDelay: () => Math.random() * 5 + 2, // Mayor delay entre repeticiones
         yoyo: true,
-        ease: "rough({ template: 'none.out', strength: 1, points: 20, taper: 'none', randomize: true, clamp: false })",
+        ease: 'none',
         delay: 2,
       })
     }
+
+    // Listener para el fin del video
+    const videoElement = videoRef.current;
+    if (videoElement) {
+      const handleVideoEnd = () => {
+        gsap.to(videoElement, {
+          duration: 1,
+          opacity: 0,
+          onComplete: () => {
+            setCurrentVideoIndex((prevIndex) => {
+              const nextIndex = (prevIndex + 1) % videoSources.length;
+              return nextIndex;
+            });
+          },
+        });
+      };
+
+      videoElement.addEventListener('ended', handleVideoEnd);
+
+      // Evento para saber cuándo el video ha cargado
+      videoElement.addEventListener('loadeddata', () => {
+        setIsVideoLoaded(true);
+      });
+
+      return () => {
+        videoElement.removeEventListener('ended', handleVideoEnd);
+      };
+    }
   }, [])
+
+  // Actualiza el video al cambiar el índice
+  useEffect(() => {
+    const videoElement = videoRef.current;
+    if (videoElement) {
+      gsap.set(videoElement, { opacity: 0 });
+      videoElement.load();
+
+      const playPromise = videoElement.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          gsap.to(videoElement, { duration: 1, opacity: 1 });
+        }).catch((error) => {
+          console.error('Error al reproducir el video:', error);
+        });
+      }
+    }
+  }, [currentVideoIndex])
+
+  // Función para controlar el audio
+  const toggleAudio = () => {
+    const audioElement = audioRef.current;
+    if (audioElement) {
+      if (isAudioPlaying) {
+        audioElement.pause();
+        setIsAudioPlaying(false);
+      } else {
+        audioElement.play();
+        setIsAudioPlaying(true);
+      }
+    }
+  };
 
   return (
     <div className="relative min-h-screen overflow-hidden">
       {/* Fondo y video */}
       <div className="absolute inset-0 overflow-hidden">
+        {/* Imagen de fondo mientras carga el video */}
+        {!isVideoLoaded && (
+          <Image
+            src="/image/loading.jpg"
+            alt="Fondo estático"
+            width={1920}
+            height={1080}
+            className="absolute top-0 left-0 w-full h-full object-cover"
+          />
+        )}
         <video
-          className="absolute top-0 left-0 w-full h-full object-cover"
+          ref={videoRef}
+          className={`absolute top-0 left-0 w-full h-full object-cover ${isVideoLoaded ? '' : 'hidden'}`}
           autoPlay
           muted
-          loop
           playsInline
           preload="auto"
+          style={{ opacity: 1 }}
         >
-          <source src="/video/optimized-background.webm" type="video/webm" />
-          <source src="/videos/hero-3.mp4" type="video/mp4" />
+          <source src={videoSources[currentVideoIndex].src} type={videoSources[currentVideoIndex].type} />
           Tu navegador no soporta el elemento video.
         </video>
         <div className="absolute inset-0 bg-black opacity-50"></div>
       </div>
+
+      {/* Elemento de audio */}
+      <audio ref={audioRef} src="/audio/loop.mp3" loop />
+
+      {/* Botón para controlar el audio */}
+      <button
+        onClick={toggleAudio}
+        className="absolute top-4 right-4 z-30 p-2 bg-black bg-opacity-50 rounded-full text-white hover:bg-opacity-75 transition"
+        aria-label={isAudioPlaying ? 'Pausar música' : 'Reproducir música'}
+      >
+        {isAudioPlaying ? <VolumeX size={24} /> : <Music size={24} />}
+      </button>
 
       {/* Barra de navegación */}
       <nav ref={navbarRef} className="relative z-20 px-6 py-4">
@@ -125,7 +222,7 @@ const Hero = () => {
               ref={subtitleRef}
               className="text-xl text-gray-300 max-w-lg"
             >
-              La plataforma definitiva para gamers y desarrolladores. Conéctate, desarrolla, juega y comunicate con millones de jugadores y programadores en todo el mundo.
+              La plataforma definitiva para gamers y desarrolladores. Conéctate, desarrolla, juega y comunícate con millones de jugadores y programadores en todo el mundo.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button

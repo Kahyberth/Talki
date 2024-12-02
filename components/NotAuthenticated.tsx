@@ -41,7 +41,7 @@ const NotAuthenticated: React.FC = () => {
         autoPlay
         loop
         muted
-        src="/videos/not-auth.mp4"
+        src="/videos/hero-4.mp4"
         poster="/video/sample-poster.jpg"
       >
         Tu navegador no soporta videos HTML5.

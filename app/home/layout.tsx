@@ -12,6 +12,9 @@ export default async function Layout({ children }: { children: ReactNode }) {
     return <NotAuthenticated />;
   }
 
+
+  console.log(session);
+
   return (
     <MainLayout>
       {children}

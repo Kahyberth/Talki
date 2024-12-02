@@ -38,7 +38,7 @@ const Footer = () => {
         </div>
       </div>
       <div className="max-w-7xl mx-auto px-6 mt-8 pt-8 border-t border-gray-800 text-center text-gray-400">
-        <p>&copy; 2023 Talki, Inc. Todos los derechos reservados.</p>
+        <p>&copy; 2024 Talki, Inc. Todos los derechos reservados.</p>
       </div>
     </footer>
   )
