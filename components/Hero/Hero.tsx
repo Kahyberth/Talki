@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { Download, Globe, Music, VolumeX } from 'lucide-react'
+import { Download, Globe, AudioLines } from 'lucide-react'
 import AuthComponent from '@/components/Auth/AuthComponent'
 import Image from 'next/image'
 
@@ -26,7 +26,7 @@ const Hero = () => {
 
   // Estados
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
-  const [isAudioPlaying, setIsAudioPlaying] = useState(false); // Iniciar en falso para evitar reproducción automática
+  const [isAudioPlaying, setIsAudioPlaying] = useState(false); 
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
 
   useEffect(() => {
@@ -62,12 +62,12 @@ const Hero = () => {
 
       gsap.to(letters, {
         duration: 0.1,
-        x: () => (Math.random() - 0.5) * 5, // Reducido para mejor rendimiento
+        x: () => (Math.random() - 0.5) * 5,
         y: () => (Math.random() - 0.5) * 5,
         rotation: () => (Math.random() - 0.5) * 5,
         opacity: () => Math.random(),
         repeat: -1,
-        repeatDelay: () => Math.random() * 5 + 2, // Mayor delay entre repeticiones
+        repeatDelay: Math.random() * 5 + 2, 
         yoyo: true,
         ease: 'none',
         delay: 2,
@@ -173,7 +173,7 @@ const Hero = () => {
         className="absolute top-4 right-4 z-30 p-2 bg-black bg-opacity-50 rounded-full text-white hover:bg-opacity-75 transition"
         aria-label={isAudioPlaying ? 'Pausar música' : 'Reproducir música'}
       >
-        {isAudioPlaying ? <VolumeX size={24} /> : <Music size={24} />}
+        {isAudioPlaying ? <AudioLines size={24} /> : <AudioLines size={24} />}
       </button>
 
       {/* Barra de navegación */}

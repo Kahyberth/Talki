@@ -41,7 +41,7 @@ const BackgroundMedia = () => {
         playsInline
         preload="auto"
       >
-        <source src="/video/optimized-background.webm" type="video/webm" />
+        <source src="/video/hero-2.mp4" type="video/webm" />
         <source src="/videos/hero-1.mp4" type="video/mp4" />
         Tu navegador no soporta el elemento video.
       </video>
