@@ -1,0 +1,29 @@
+[
+    {
+        "id": "1",
+        "name": "Talki",
+        "textChannels": [
+            "general",
+            "polls",
+            "snippets",
+            "github",
+            "testing"
+        ],
+        "voiceChannels": [
+            "General"
+        ]
+    },
+    {
+        "id": "2",
+        "name": "ChatterBox",
+        "textChannels": [
+            "lounge",
+            "dev-talk",
+            "music"
+        ],
+        "voiceChannels": [
+            "Hangout",
+            "Games"
+        ]
+    }
+]
