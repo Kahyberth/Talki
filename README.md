@@ -1,6 +1,6 @@
 # 🌟 **Talki** - Where Developers and Gamers Connect
 
-![Logo de Talki](https://drive.google.com/uc?id=1wpGKm_YDd4aV9-AdEziiseJ5oFFklgPe)
+![Logo de Talki](https://drive.google.com/uc?id=1FE69RQj1PhDoFMsV3jJfJ3M-FMztxKtb)
 
 ---
 
