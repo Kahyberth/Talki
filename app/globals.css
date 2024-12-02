@@ -94,3 +94,103 @@ body {
   }
 }
 
+/* Float animation */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes float-reverse {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(20px);
+  }
+}
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes twinkle-delay {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Utility classes for animation */
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-float-reverse {
+  animation: float-reverse 5s ease-in-out infinite;
+}
+
+.animate-twinkle {
+  animation: twinkle 3s ease-in-out infinite;
+}
+
+.animate-twinkle-delay {
+  animation: twinkle-delay 4s ease-in-out infinite;
+}
+
+
+/* styles/globals.css */
+@keyframes float {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(10deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+.floating-element {
+  animation: float 5s ease-in-out infinite;
+}
+
+
+/* styles/globals.css */
+.neon-text {
+  text-shadow:
+    0 0 5px #fff,
+    0 0 10px #fff,
+    0 0 20px #ff00de,
+    0 0 30px #ff00de,
+    0 0 40px #ff00de,
+    0 0 50px #ff00de,
+    0 0 60px #ff00de;
+}
+
+
+/* styles/globals.css */
+.letter {
+  display: inline-block;
+  position: relative;
+}
+
+.neon-text {
+  color: #fff;
+  text-shadow:
+    0 0 5px rgba(255, 0, 222, 0.5),
+    0 0 10px rgba(255, 0, 222, 0.5),
+    0 0 20px rgba(255, 0, 222, 0.5),
+    0 0 40px rgba(255, 0, 222, 0.5);
+}

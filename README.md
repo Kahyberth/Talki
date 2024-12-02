@@ -1,36 +1,109 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌟 **Talki** - Where Developers and Gamers Connect
 
-## Getting Started
+![Logo de Talki](https://drive.google.com/uc?id=1wpGKm_YDd4aV9-AdEziiseJ5oFFklgPe)
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🎯 **Acerca de Talki**
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**Talki** es una aplicación de mensajería y videollamadas, diseñada especialmente para **desarrolladores** y **gamers**. Nuestra misión es facilitar una comunicación clara, fluida y productiva para que puedas enfocarte en lo que realmente importa: tus proyectos y tus sesiones de juego.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🚀 **Características Principales**
 
-## Learn More
+### 💬 **Mensajería Instantánea**
+Comunicación rápida y eficiente con tus amigos, colegas y equipos.
 
-To learn more about Next.js, take a look at the following resources:
+### 🎥 **Videollamadas de Alta Calidad**
+Conecta en tiempo real con videollamadas nítidas y estables, perfectas para revisiones de código o partidas en equipo.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 🛠️ **Integración con Herramientas de Desarrollo**
+- Conecta tus proyectos de GitHub, GitLab y otras plataformas.
+- Notificaciones automáticas de commits y pull requests.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 🎮 **Salas de Juego**
+- Crea salas privadas para organizar partidas.
+- Usa comandos de voz personalizados para coordinar estrategias.
 
-## Deploy on Vercel
+### 🔒 **Seguridad y Privacidad**
+- Encriptación de extremo a extremo.
+- Configuración avanzada de permisos y roles en grupos.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 👀 **Compartir Pantalla**
+- Muestra en tiempo real tu progreso en desarrollo.
+- Ideal para streamers y presentaciones.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 📸 **Capturas de Pantalla**
+
+### 🌟 Pantalla de Inicio
+![Pantalla de inicio](ruta/a/la/captura-inicio.png)
+
+### 💬 Interfaz de Chat
+![Chat](ruta/a/la/captura-chat.png)
+
+### 🎥 Videollamada en Acción
+![Videollamada](ruta/a/la/captura-videollamada.png)
+
+---
+
+## 🛠️ **Guía de Instalación**
+
+### **Requisitos**
+- **Sistemas Compatibles**: Windows, macOS, Linux, Android, iOS.
+- **Conexión a Internet**: Requerida para las funciones en línea.
+
+### **Pasos de Instalación**
+1. Descarga Talki desde nuestro [sitio web oficial](https://www.talkiapp.com/download).
+2. Instala la aplicación en tu dispositivo.
+3. Regístrate o inicia sesión con tu cuenta.
+4. ¡Listo! Ahora puedes empezar a comunicarte.
+
+---
+
+## 🧑‍💻 **¿Cómo Usar Talki?**
+
+1. **Crear un Grupo**: Organiza equipos según tus necesidades (desarrollo, gaming, etc.).
+2. **Enviar Mensajes**: Utiliza el chat para compartir ideas o coordinar tareas.
+3. **Iniciar Videollamadas**: Haz clic en el ícono de cámara para conectarte con tu equipo.
+4. **Configurar Integraciones**: Vincula tu cuenta con plataformas de desarrollo o juegos.
+
+---
+
+## 🤝 **Contribuye a Talki**
+
+¿Tienes ideas geniales para mejorar Talki? ¡Contribuir es fácil! 🎉
+
+1. **Forkea** este repositorio.
+2. Crea una rama para tus cambios:  
+   `git checkout -b feature/NuevaCaracteristica`
+3. Haz un commit con tus cambios:  
+   `git commit -m "Añadí una nueva característica"`
+4. Haz push a la rama:  
+   `git push origin feature/NuevaCaracteristica`
+5. Abre un **Pull Request** en GitHub.
+
+Para más detalles, consulta nuestro [CONTRIBUTING.md](CONTRIBUTING.md).
+
+---
+
+## 🌐 **Conéctate con Nosotros**
+
+- 📧 **Email**: contacto@talkiapp.com  
+- 🌍 **Sitio Web**: [www.talkiapp.com](https://www.talkiapp.com)  
+- 🐦 **Twitter**: [@TalkiApp](https://twitter.com/TalkiApp)  
+- 💬 **Discord**: [Únete a nuestra comunidad](https://discord.gg/talkiapp)
+
+---
+
+## 📄 **Licencia**
+
+Este proyecto está bajo la licencia **MIT**. Consulta el archivo [LICENSE](LICENSE) para más información.
+
+---
+
+## ⭐ **¿Te gusta Talki?**
+
+¡No olvides darle una estrella ⭐ a este repositorio y ayudarnos a crecer! 🚀
