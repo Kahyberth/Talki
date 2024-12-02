@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic'
 const Hero = dynamic(() => import('@/components/Hero/Hero'))
 const Features = dynamic(() => import('@/components/Features'))
 const TestimonialsSection = dynamic(() => import('@/components/TestimonialsSection'))
-const CommunitySection = dynamic(() => import('@/components/CommunitySection'))
+const CommunitySection = dynamic(() => import('@/components/chat/CommunitySection'))
 const CTASection = dynamic(() => import('@/components/CTASection'))
 const Footer = dynamic(() => import('@/components/Footer'))
 
