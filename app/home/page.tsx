@@ -18,6 +18,7 @@ import {
   ScreenShare,
 } from "lucide-react";
 import { SetStateAction, useEffect, useState } from "react";
+import { useCookie } from "@/contexts/CookieContext";
 
 
 
@@ -30,6 +31,8 @@ interface Chat {
 }
 
 const CustomDiscordUI = () => {
+  const { getClientCookie } = useCookie();
+
   // Estados para manejar servidores, canales y tipo de canal
   const [currentChannel, setCurrentChannel] = useState("general");
   const [channelType, setChannelType] = useState("text");
@@ -38,14 +41,18 @@ const CustomDiscordUI = () => {
   const [participants, setParticipants] = useState<string[]>([]);
   const [cookie, setCookie] = useState("");
 
-  
+
   const [socket, setSocket] = useState<Socket | null>(null);
 
 
-
   useEffect(() => {
+   
+    const authCookie = getClientCookie("authjs.session-token");
+    if (authCookie) {
+      setCookie(authCookie);
+      console.log("Cookie de autenticación:", authCookie);
+    }
     
-
 
     const newSocket = io("http://localhost:4000", {
       transports: ["websocket"],
@@ -145,19 +152,17 @@ const CustomDiscordUI = () => {
                 {channels.text.map((channel, index) => (
                   <div
                     key={index}
-                    className={`flex items-center space-x-2 px-2 py-1 rounded hover:bg-gray-700 cursor-pointer transition-colors duration-200 group ${
-                      currentChannel === channel && channelType === "text"
+                    className={`flex items-center space-x-2 px-2 py-1 rounded hover:bg-gray-700 cursor-pointer transition-colors duration-200 group ${currentChannel === channel && channelType === "text"
                         ? "bg-gray-700"
                         : ""
-                    }`}
+                      }`}
                     onClick={() => handleChannelChange(channel, "text")}
                   >
                     <Hash
-                      className={`text-gray-400 h-5 w-5 group-hover:text-indigo-500 ${
-                        currentChannel === channel && channelType === "text"
+                      className={`text-gray-400 h-5 w-5 group-hover:text-indigo-500 ${currentChannel === channel && channelType === "text"
                           ? "text-indigo-500"
                           : ""
-                      }`}
+                        }`}
                     />
                     <span className="text-sm">{channel}</span>
                   </div>
@@ -172,19 +177,17 @@ const CustomDiscordUI = () => {
                 {channels.voice.map((channel, index) => (
                   <div
                     key={index}
-                    className={`flex items-center space-x-2 px-2 py-1 rounded hover:bg-gray-700 cursor-pointer transition-colors duration-200 group ${
-                      currentChannel === channel && channelType === "voice"
+                    className={`flex items-center space-x-2 px-2 py-1 rounded hover:bg-gray-700 cursor-pointer transition-colors duration-200 group ${currentChannel === channel && channelType === "voice"
                         ? "bg-gray-700"
                         : ""
-                    }`}
+                      }`}
                     onClick={() => handleChannelChange(channel, "voice")}
                   >
                     <VoiceIcon
-                      className={`text-gray-400 h-5 w-5 group-hover:text-indigo-500 ${
-                        currentChannel === channel && channelType === "voice"
+                      className={`text-gray-400 h-5 w-5 group-hover:text-indigo-500 ${currentChannel === channel && channelType === "voice"
                           ? "text-indigo-500"
                           : ""
-                      }`}
+                        }`}
                     />
                     <span className="text-sm">{channel}</span>
                   </div>
