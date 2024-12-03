@@ -7,7 +7,6 @@ import { eq } from "drizzle-orm";
 import { AuthError } from "next-auth";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
-import { avatar } from "@/hooks/useCreateAvatar";
 
 export const loginAction = async (values: z.infer<typeof loginSchema>) => {
   try {
@@ -55,10 +54,12 @@ export const registerAction = async (
     const hashedPassword = await bcrypt.hash(data?.password as string, 10);
      
     await db.insert(users).values({
+      name: data?.name,
       email: data?.email,
       password: hashedPassword,
-      image: avatar.toDataUri(),
+      image: `https://api.dicebear.com/6.x/adventurer/svg?seed=Aneka&backgroundColor=b6e3f4`,
     });
+
 
     return {
       success: true,
