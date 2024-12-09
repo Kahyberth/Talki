@@ -19,9 +19,7 @@ import {
 } from "lucide-react";
 import { SetStateAction, useEffect, useState } from "react";
 import { useCookie } from "@/contexts/CookieContext";
-
-
-
+import { signOut } from "next-auth/react"
 
 interface Chat {
   user: string;
@@ -40,19 +38,15 @@ const CustomDiscordUI = () => {
   const [message, setMessage] = useState("");
   const [participants, setParticipants] = useState<string[]>([]);
   const [cookie, setCookie] = useState("");
-
-
+  const [isOpen, setIsOpen] = useState(false);
   const [socket, setSocket] = useState<Socket | null>(null);
 
-
   useEffect(() => {
-   
     const authCookie = getClientCookie("authjs.session-token");
     if (authCookie) {
       setCookie(authCookie);
       console.log("Cookie de autenticación:", authCookie);
     }
-    
 
     const newSocket = io("http://localhost:4000", {
       transports: ["websocket"],
@@ -79,12 +73,15 @@ const CustomDiscordUI = () => {
     };
   }, []);
 
-
   const sendMessage = () => {
     if (socket && message.trim() !== "") {
       socket.emit("sendMessage", { message });
       setMessage("");
     }
+  };
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
   };
 
   const servers = ["🏠", "🔥", "🌟", "🎮", "🎵", "📚"];
@@ -152,17 +149,19 @@ const CustomDiscordUI = () => {
                 {channels.text.map((channel, index) => (
                   <div
                     key={index}
-                    className={`flex items-center space-x-2 px-2 py-1 rounded hover:bg-gray-700 cursor-pointer transition-colors duration-200 group ${currentChannel === channel && channelType === "text"
+                    className={`flex items-center space-x-2 px-2 py-1 rounded hover:bg-gray-700 cursor-pointer transition-colors duration-200 group ${
+                      currentChannel === channel && channelType === "text"
                         ? "bg-gray-700"
                         : ""
-                      }`}
+                    }`}
                     onClick={() => handleChannelChange(channel, "text")}
                   >
                     <Hash
-                      className={`text-gray-400 h-5 w-5 group-hover:text-indigo-500 ${currentChannel === channel && channelType === "text"
+                      className={`text-gray-400 h-5 w-5 group-hover:text-indigo-500 ${
+                        currentChannel === channel && channelType === "text"
                           ? "text-indigo-500"
                           : ""
-                        }`}
+                      }`}
                     />
                     <span className="text-sm">{channel}</span>
                   </div>
@@ -177,17 +176,19 @@ const CustomDiscordUI = () => {
                 {channels.voice.map((channel, index) => (
                   <div
                     key={index}
-                    className={`flex items-center space-x-2 px-2 py-1 rounded hover:bg-gray-700 cursor-pointer transition-colors duration-200 group ${currentChannel === channel && channelType === "voice"
+                    className={`flex items-center space-x-2 px-2 py-1 rounded hover:bg-gray-700 cursor-pointer transition-colors duration-200 group ${
+                      currentChannel === channel && channelType === "voice"
                         ? "bg-gray-700"
                         : ""
-                      }`}
+                    }`}
                     onClick={() => handleChannelChange(channel, "voice")}
                   >
                     <VoiceIcon
-                      className={`text-gray-400 h-5 w-5 group-hover:text-indigo-500 ${currentChannel === channel && channelType === "voice"
+                      className={`text-gray-400 h-5 w-5 group-hover:text-indigo-500 ${
+                        currentChannel === channel && channelType === "voice"
                           ? "text-indigo-500"
                           : ""
-                        }`}
+                      }`}
                     />
                     <span className="text-sm">{channel}</span>
                   </div>
@@ -196,20 +197,45 @@ const CustomDiscordUI = () => {
             </div>
 
             {/* User Info */}
-            <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-700">
-              <div className="flex items-center space-x-2">
-                <div className="bg-indigo-500 w-8 h-8 rounded-full flex items-center justify-center text-white">
-                  U
+            <div className="relative">
+              {/* Contenedor de Usuario */}
+              <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-700">
+                <div className="flex items-center space-x-2">
+                  <div className="bg-indigo-500 w-8 h-8 rounded-full flex items-center justify-center text-white">
+                    U
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-sm font-semibold">Usuario</span>
+                    <span className="text-xs text-gray-400">#1234</span>
+                  </div>
                 </div>
-                <div className="flex flex-col">
-                  <span className="text-sm font-semibold">Usuario</span>
-                  <span className="text-xs text-gray-400">#1234</span>
+                {/* Iconos */}
+                <div className="flex items-center space-x-1">
+                  <Mic className="text-gray-400 hover:text-white cursor-pointer h-5 w-5 transition-colors duration-200" />
+                  <Headphones className="text-gray-400 hover:text-white cursor-pointer h-5 w-5 transition-colors duration-200" />
+                  <div className="relative">
+                    <Settings
+                      className="text-gray-400 hover:text-white cursor-pointer h-5 w-5 transition-colors duration-200"
+                      onClick={toggleDropdown}
+                    />
+                    {/* Dropdown */}
+                    {isOpen && (
+                      <div className="absolute right-0 mt-2 w-40 bg-gray-800 border border-gray-700 rounded-lg shadow-lg z-10">
+                        <ul className="py-2">
+                          <li className="px-4 py-2 hover:bg-gray-700 cursor-pointer text-sm text-white">
+                            Perfil
+                          </li>
+                          <li className="px-4 py-2 hover:bg-gray-700 cursor-pointer text-sm text-white">
+                            Ajuste
+                          </li>
+                          <li className="px-4 py-2 hover:bg-red-600 cursor-pointer text-sm text-white" onClick={() => signOut()}>
+                            Cerrar sesión
+                          </li>
+                        </ul>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-center space-x-1">
-                <Mic className="text-gray-400 hover:text-white cursor-pointer h-5 w-5 transition-colors duration-200" />
-                <Headphones className="text-gray-400 hover:text-white cursor-pointer h-5 w-5 transition-colors duration-200" />
-                <Settings className="text-gray-400 hover:text-white cursor-pointer h-5 w-5 transition-colors duration-200" />
               </div>
             </div>
           </div>
