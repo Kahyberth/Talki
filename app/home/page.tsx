@@ -1,4 +1,5 @@
 "use client";
+import "./styles.css";
 import io, { Socket } from "socket.io-client";
 import {
   Users,
@@ -48,6 +49,9 @@ const CustomDiscordUI = () => {
   const { currentServer } = useServerStore();
 
   const modalRef = useRef<HTMLDivElement | null>(null);
+
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const [profileData, setProfileData] = useState({ name: "", avatar: "" });
 
   useEffect(() => {
     startTransition(async () => {
@@ -114,7 +118,7 @@ const CustomDiscordUI = () => {
     const userInfo = {
       name: user,
       info: `Información adicional sobre ${user}`,
-      avatar : "https://api.adorable.io/avatars/256/${user}.png",
+      avatar : `https://api.adorable.io/avatars/256/${user}.png`,
       
     };
     setSelectedUser(userInfo);
@@ -127,6 +131,19 @@ const CustomDiscordUI = () => {
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedUser(null);
+  };
+
+  const handleProfileUpdate = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setProfileData((prevData) => ({ ...prevData, [name]: value }));
+  };
+  
+  const openProfileModal = () => {
+    setIsProfileModalOpen(true);
+  };
+  
+  const closeProfileModal = () => {
+    setIsProfileModalOpen(false);
   };
 
   return (
@@ -189,7 +206,7 @@ const CustomDiscordUI = () => {
             {/* Voice Channels */}
             <div>
               <div className="flex items-center justify-between text-gray-400 uppercase text-xs font-bold mb-1 mt-4">
-                <span>Voz</span>
+                <span>Voz</span>  
                 <PlusCircle className="h-4 w-4 hover:text-white cursor-pointer transition-colors duration-200" />
               </div>
               {channels.voice.map((channel, index) => (
@@ -238,7 +255,10 @@ const CustomDiscordUI = () => {
                   {isOpen && (
                     <div className="absolute right-0 bottom-10 -translate-y-half mb-2 w-40 bg-gray-800 border border-gray-700 rounded-lg shadow-lg z-10">
                       <ul className="py-2">
-                        <li className="px-4 py-2 hover:bg-gray-700 cursor-pointer text-sm text-white">
+                        <li
+                          className="px-4 py-2 hover:bg-gray-700 cursor-pointer text-sm text-white"
+                          onClick={openProfileModal}
+                        >
                           Perfil
                         </li>
                         <li className="px-4 py-2 hover:bg-gray-700 cursor-pointer text-sm text-white">
@@ -437,13 +457,87 @@ const CustomDiscordUI = () => {
             {(onClose) => (
               <>
                 <ModalHeader className="flex flex-col gap-1 text-center">
-                  <img src={selectedUser.avatar} alt={`${selectedUser.name} avatar`} className="w-16 h-16 rounded-full mx-auto"/>
+                  <img
+                    src={selectedUser.avatar}
+                    alt={`${selectedUser.name} avatar`}
+                    width={64}
+                    height={64}
+                    className="w-16 h-16 rounded-full mx-auto"
+                  />
                   {selectedUser.name}
                 </ModalHeader>
                 <ModalBody>
                   <p>{selectedUser.info}</p>
                 </ModalBody>
                 <ModalFooter>
+                </ModalFooter>
+              </>
+            )}
+          </ModalContent>
+        </Modal>
+      )}
+
+      {isProfileModalOpen && (
+        <Modal
+          isOpen={isProfileModalOpen}
+          onOpenChange={(open) => setIsProfileModalOpen(open)}
+          backdrop="transparent"
+          motionProps={{
+            variants: {
+              enter: {
+                y: 0,
+                opacity: 1,
+                transition: {
+                  duration: 0.3,
+                  ease: "easeOut",
+                },
+              },
+              exit: {
+                y: -20,
+                opacity: 0,
+                transition: {
+                  duration: 0.2,
+                  ease: "easeIn",
+                },
+              },
+            },
+          }}
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "300px",
+          }}
+        >
+          <ModalContent>
+            {(onClose) => (
+              <>
+                <ModalHeader className="flex flex-col gap-1 text-center">
+                  Editar Perfil
+                </ModalHeader>
+                <ModalBody>
+                  <div className="flex flex-col space-y-4">
+                    <input
+                      type="text"
+                      name="name"
+                      placeholder="Nombre"
+                      value={profileData.name}
+                      onChange={handleProfileUpdate}
+                      className="bg-gray-700 text-white p-2 rounded"
+                    />
+                    <input
+                      type="text"
+                      name="avatar"
+                      placeholder="URL de la imagen de perfil"
+                      value={profileData.avatar}
+                      onChange={handleProfileUpdate}
+                      className="bg-gray-700 text-white p-2 rounded"
+                    />
+                  </div>
+                </ModalBody>
+                <ModalFooter>
+                  <Button onClick={closeProfileModal}>Guardar</Button>
                 </ModalFooter>
               </>
             )}
