@@ -1,5 +1,4 @@
 "use client";
-import "./styles.css";
 import io, { Socket } from "socket.io-client";
 import {
   Users,
@@ -21,7 +20,7 @@ import { SetStateAction, useEffect, useRef, useState, useTransition } from "reac
 import { signOut } from "next-auth/react";
 import { handlerSession } from "@/actions/handlerSession-action";
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/modal";
-import { avatar, Button } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
 import { useServerStore } from "@/lib/store";
 
 interface Chat {
