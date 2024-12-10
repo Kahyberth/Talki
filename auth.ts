@@ -135,11 +135,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       return true; // Permite el inicio de sesión
     },
 
-    jwt({ token, user }) {
+    jwt({ token, user, account }) {
       if (user) {
         token.id = user.id;
       }
-      return token;
+      return { ...token, accessToken: account?.access_token };
     },
     session({ session, token }: { session: any; token: any }) {
       session.user.id = token.id;

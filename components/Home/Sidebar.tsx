@@ -2,13 +2,11 @@ import React, { useState } from "react";
 import { PlusCircle } from "lucide-react";
 
 
-interface SidebarProps {
 
-    servers: string[];
-  
-  }
 
-  const Sidebar: React.FC<SidebarProps> = ({ servers }) => {
+  const servers = ["🏠", "🔥", "🌟", "🎮", "🎵", "📚"];
+
+  const Sidebar = () => {
   const [currentServer, setCurrentServer] = useState("Servidor 1");
   const [currentChannel, setCurrentChannel] = useState("general");
   const [channelType, setChannelType] = useState("text");

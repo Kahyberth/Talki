@@ -1,7 +1,8 @@
+import GameServers from '@/components/Home/GameServers'
 import React from 'react'
 
 export default function page() {
   return (
-    <div>Loggin</div>
+    <GameServers />
   )
 }
