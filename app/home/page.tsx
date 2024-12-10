@@ -16,11 +16,11 @@ import {
   Volume2,
   ScreenShare,
 } from "lucide-react";
-import { SetStateAction, useEffect, useState, useTransition } from "react";
+import { SetStateAction, useEffect, useRef, useState, useTransition } from "react";
 import { signOut } from "next-auth/react";
 import { handlerSession } from "@/actions/handlerSession-action";
-import { Modal, ModalBody, ModalFooter, ModalHeader } from "@nextui-org/modal";
-import { Button } from "@nextui-org/react";
+import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/modal";
+import { avatar, Button } from "@nextui-org/react";
 import { useServerStore } from "@/lib/store";
 
 interface Chat {
@@ -31,8 +31,11 @@ interface Chat {
 }
 
 const CustomDiscordUI = () => {
+
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedUser, setSelectedUser] = useState<{ name: string; info: string } | null>(null);
+  const [selectedUser, setSelectedUser] = useState<{ name: string; info: string, avatar: string } | null>(null);
+  const [modalPosition, setModalPosition] = useState<{ top: number; left: number } | null>(null);
+
   const [currentChannel, setCurrentChannel] = useState("general");
   const [channelType, setChannelType] = useState("text");
   const [chats, setChats] = useState<Chat[]>([]);
@@ -43,6 +46,8 @@ const CustomDiscordUI = () => {
   const [userEmail, setUserEmail] = useState("");
   const [isPending, startTransition] = useTransition();
   const { currentServer } = useServerStore();
+
+  const modalRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     startTransition(async () => {
@@ -104,14 +109,19 @@ const CustomDiscordUI = () => {
     setChannelType(type);
   };
 
-  const handleUserClick = (user: string) => {
+  const handleUserClick = (user: string, event: React.MouseEvent<HTMLDivElement>) => {
     console.log("Usuario seleccionado:", user);
     const userInfo = {
       name: user,
       info: `Información adicional sobre ${user}`,
+      avatar : "https://api.adorable.io/avatars/256/${user}.png",
+      
     };
     setSelectedUser(userInfo);
     setIsModalOpen(true);
+
+    const rect = event.currentTarget.getBoundingClientRect();
+    setModalPosition({ top: rect.top, left: rect.left });
   };
 
   const closeModal = () => {
@@ -226,7 +236,7 @@ const CustomDiscordUI = () => {
                     onClick={toggleDropdown}
                   />
                   {isOpen && (
-                    <div className="absolute right-0 mt-2 w-40 bg-gray-800 border border-gray-700 rounded-lg shadow-lg z-10">
+                    <div className="absolute right-0 bottom-10 -translate-y-half mb-2 w-40 bg-gray-800 border border-gray-700 rounded-lg shadow-lg z-10">
                       <ul className="py-2">
                         <li className="px-4 py-2 hover:bg-gray-700 cursor-pointer text-sm text-white">
                           Perfil
@@ -370,7 +380,7 @@ const CustomDiscordUI = () => {
               <div
                 key={index}
                 className="flex items-center space-x-3 hover:bg-gray-700 p-2 rounded cursor-pointer transition-colors duration-200"
-                onClick={() => handleUserClick(user)}
+                onClick={(event) => handleUserClick(user, event)}
               >
                 <div className="relative">
                   <div className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center text-white font-bold">
@@ -386,14 +396,58 @@ const CustomDiscordUI = () => {
       </div>
 
       {selectedUser && (
-        <Modal isOpen={isModalOpen} onClose={closeModal} className="z-100">
-          <ModalHeader>{selectedUser.name}</ModalHeader>
-          <ModalBody>
-            <p>{selectedUser.info}</p>
-          </ModalBody>
-          <ModalFooter>
-            <Button onClick={closeModal}>Cerrar</Button>
-          </ModalFooter>
+        <Modal
+          isOpen={isModalOpen}
+          onOpenChange={(open) => {
+            setIsModalOpen(open);
+            if (!open) setSelectedUser(null);
+          }}
+          backdrop="transparent"
+          motionProps={{
+            variants: {
+              enter: {
+                y: 0,
+                opacity: 1,
+                transition: {
+                  duration: 0.3,
+                  ease: "easeOut",
+                },
+              },
+              exit: {
+                y: -20,
+                opacity: 0,
+                transition: {
+                  duration: 0.2,
+                  ease: "easeIn",
+                },
+              },
+            },
+          }}
+          style={{
+            position: "absolute",
+            top: modalPosition ? modalPosition.top - 50 : "50%",
+            left: modalPosition ? modalPosition.left - 350 : "50%",
+            transform: modalPosition ? "translate(0, 0)" : "translate(-50%, -50%)",
+            width: "300px",
+            height: "500",
+          }}
+          ref={modalRef}
+        >
+          <ModalContent>
+            {(onClose) => (
+              <>
+                <ModalHeader className="flex flex-col gap-1 text-center">
+                  <img src={selectedUser.avatar} alt={`${selectedUser.name} avatar`} className="w-16 h-16 rounded-full mx-auto"/>
+                  {selectedUser.name}
+                </ModalHeader>
+                <ModalBody>
+                  <p>{selectedUser.info}</p>
+                </ModalBody>
+                <ModalFooter>
+                </ModalFooter>
+              </>
+            )}
+          </ModalContent>
         </Modal>
       )}
 
