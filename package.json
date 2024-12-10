@@ -43,6 +43,7 @@
     "framer-motion": "^11.13.3",
     "gsap": "^3.12.5",
     "js-cookie": "^3.0.5",
+    "livekit-client": "^2.7.3",
     "lucide-react": "^0.462.0",
     "nanoid": "^5.0.9",
     "next": "^15.0.3",
