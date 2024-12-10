@@ -22,6 +22,7 @@ import { handlerSession } from "@/actions/handlerSession-action";
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/modal";
 import { Button } from "@nextui-org/react";
 import { useServerStore } from "@/lib/store";
+import  EmojiPicker from "emoji-picker-react";
 
 interface Chat {
   user: string;
@@ -51,6 +52,12 @@ const CustomDiscordUI = () => {
 
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [profileData, setProfileData] = useState({ name: "", avatar: "" });
+  const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
+
+  const handleEmojiClick = (emoji: any) => {
+    setMessage((prevMessage) => prevMessage + emoji.emoji);
+    setIsEmojiPickerOpen(false);
+  };
 
   useEffect(() => {
     startTransition(async () => {
@@ -324,7 +331,15 @@ const CustomDiscordUI = () => {
                   />
                   <div className="flex items-center space-x-3">
                     <Gift className="text-gray-400 hover:text-white cursor-pointer h-6 w-6 transition-colors duration-200" />
-                    <Smile className="text-gray-400 hover:text-white cursor-pointer h-6 w-6 transition-colors duration-200" />
+                    <Smile
+                      className="text-gray-400 hover:text-white cursor-pointer h-6 w-6 transition-colors duration-200"
+                      onClick={() => setIsEmojiPickerOpen(!isEmojiPickerOpen)}
+                    />
+                    {isEmojiPickerOpen && (
+                      <div className="absolute bottom-16 right-60">
+                        <EmojiPicker onEmojiClick={handleEmojiClick} />
+                      </div>
+                    )}
                     <Send
                       className="text-indigo-500 hover:text-indigo-400 cursor-pointer h-6 w-6 transition-colors duration-200"
                       onClick={sendMessage}
