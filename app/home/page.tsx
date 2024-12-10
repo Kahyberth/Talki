@@ -19,6 +19,7 @@ import {
 import { SetStateAction, useEffect, useState, useTransition } from "react";
 import { signOut } from "next-auth/react";
 import { handlerSession } from "@/actions/handlerSession-action";
+import { useServerStore } from "@/lib/store";
 
 interface Chat {
   user: string;
@@ -37,6 +38,7 @@ const CustomDiscordUI = () => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [userEmail, setUserEmail] = useState("");
   const [isPending, startTransition] = useTransition();
+  const { currentServer } = useServerStore();
 
   useEffect(() => {
     startTransition(async () => {
@@ -54,6 +56,8 @@ const CustomDiscordUI = () => {
     });
 
     setSocket(newSocket);
+
+    console.log(currentServer);
 
     newSocket.on("connect", () => {
       console.log("Conectado al servidor WebSocket");
@@ -120,7 +124,7 @@ const CustomDiscordUI = () => {
         <div className="bg-gray-850 w-60 flex flex-col p-4 space-y-3 border-r border-gray-700">
           {/* Server Name */}
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold">{"Servidor"}</h2>
+            <h2 className="text-xl font-bold">{`Servidor: ${currentServer}`}</h2>
             <ChevronDown className="h-5 w-5 text-gray-400" />
           </div>
 
