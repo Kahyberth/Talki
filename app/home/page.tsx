@@ -19,6 +19,8 @@ import {
 import { SetStateAction, useEffect, useState, useTransition } from "react";
 import { signOut } from "next-auth/react";
 import { handlerSession } from "@/actions/handlerSession-action";
+import { Modal, ModalBody, ModalFooter, ModalHeader } from "@nextui-org/modal";
+import { Button } from "@nextui-org/react";
 
 interface Chat {
   user: string;
@@ -28,6 +30,8 @@ interface Chat {
 }
 
 const CustomDiscordUI = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<{ name: string; info: string } | null>(null);
   const [currentChannel, setCurrentChannel] = useState("general");
   const [channelType, setChannelType] = useState("text");
   const [chats, setChats] = useState<Chat[]>([]);
@@ -96,6 +100,21 @@ const CustomDiscordUI = () => {
     setChannelType(type);
   };
 
+  const handleUserClick = (user: string) => {
+    console.log("Usuario seleccionado:", user);
+    const userInfo = {
+      name: user,
+      info: `Información adicional sobre ${user}`,
+    };
+    setSelectedUser(userInfo);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedUser(null);
+  };
+
   return (
     <>
       {/* Header */}
@@ -125,7 +144,7 @@ const CustomDiscordUI = () => {
           </div>
 
           {/* Channel Categories */}
-          <div className="flex flex-col space-y-2 overflow-y-auto">
+          <div className="flex flex-col space-y-2 overflow-y-auto flex-1">
             {/* Text Channels */}
             <div>
               <div className="flex items-center justify-between text-gray-400 uppercase text-xs font-bold mb-1">
@@ -183,7 +202,7 @@ const CustomDiscordUI = () => {
           </div>
 
           {/* User Info */}
-          <div className="relative mt-auto pt-4 border-t border-gray-700">
+          <div className="relative mt-absolute pt-4 border-t border-gray-700">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <div className="bg-indigo-500 w-8 h-8 rounded-full flex items-center justify-center text-white">
@@ -242,7 +261,9 @@ const CustomDiscordUI = () => {
                     <div>
                       <p className="text-sm font-semibold">
                         {msg.user}{" "}
-                        <span className="text-xs text-gray-500">{msg.time}</span>
+                        <span className="text-xs text-gray-500">
+                          {msg.time}
+                        </span>
                       </p>
                       <p className="text-gray-300 group-hover:text-gray-100">
                         {msg.message}
@@ -345,6 +366,7 @@ const CustomDiscordUI = () => {
               <div
                 key={index}
                 className="flex items-center space-x-3 hover:bg-gray-700 p-2 rounded cursor-pointer transition-colors duration-200"
+                onClick={() => handleUserClick(user)}
               >
                 <div className="relative">
                   <div className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center text-white font-bold">
@@ -358,6 +380,19 @@ const CustomDiscordUI = () => {
           </div>
         </div>
       </div>
+
+      {selectedUser && (
+        <Modal isOpen={isModalOpen} onClose={closeModal} className="z-100">
+          <ModalHeader>{selectedUser.name}</ModalHeader>
+          <ModalBody>
+            <p>{selectedUser.info}</p>
+          </ModalBody>
+          <ModalFooter>
+            <Button onClick={closeModal}>Cerrar</Button>
+          </ModalFooter>
+        </Modal>
+      )}
+
     </>
   );
 };
