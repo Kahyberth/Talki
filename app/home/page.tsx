@@ -22,6 +22,8 @@ import { handlerSession } from "@/actions/handlerSession-action";
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/modal";
 import { Button } from "@nextui-org/react";
 import { useServerStore } from "@/lib/store";
+import VoiceChannels from "@/components/VoiceChannels";
+import { VoiceChannel as ModelVoiceChannels } from "@/models/VoiceChannels";
 import  EmojiPicker from "emoji-picker-react";
 
 interface Chat {
@@ -108,7 +110,12 @@ const CustomDiscordUI = () => {
 
   const channels = {
     text: ["general", "proyectos", "equipo", "off-topic"],
-    voice: ["General", "Reuniones", "Soporte"],
+    voice: [
+      { name: "general", id: "1" },
+      { name: "proyectos", id: "2" },
+      { name: "equipo", id: "3"},
+      { name: "off-topic", id: "4" },
+    ],
   };
 
   const handleChannelChange = (
@@ -210,32 +217,7 @@ const CustomDiscordUI = () => {
               ))}
             </div>
             {/* Voice Channels */}
-            <div>
-              <div className="flex items-center justify-between text-gray-400 uppercase text-xs font-bold mb-1 mt-4">
-                <span>Voz</span>  
-                <PlusCircle className="h-4 w-4 hover:text-white cursor-pointer transition-colors duration-200" />
-              </div>
-              {channels.voice.map((channel, index) => (
-                <div
-                  key={index}
-                  className={`flex items-center space-x-2 px-2 py-1 rounded hover:bg-gray-700 cursor-pointer transition-colors duration-200 group ${
-                    currentChannel === channel && channelType === "voice"
-                      ? "bg-gray-700"
-                      : ""
-                  }`}
-                  onClick={() => handleChannelChange(channel, "voice")}
-                >
-                  <VoiceIcon
-                    className={`text-gray-400 h-5 w-5 group-hover:text-indigo-500 ${
-                      currentChannel === channel && channelType === "voice"
-                        ? "text-indigo-500"
-                        : ""
-                    }`}
-                  />
-                  <span className="text-sm">{channel}</span>
-                </div>
-              ))}
-            </div>
+            <VoiceChannels channels={channels.voice} />
           </div>
 
           {/* User Info */}

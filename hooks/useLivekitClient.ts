@@ -19,12 +19,15 @@ export const useLiveKit = (): UseLiveKit => {
   ): Promise<void> => {
     try {
       if (currentRoom) {
+        console.log("Disconnecting from current room...");
         await currentRoom.disconnect();
       }
 
+      console.log("Connecting to room...");
       const newRoom = new Room();
       await newRoom.connect(serverUrl, token, options);
 
+      // Set up event listeners for participants
       newRoom.on(RoomEvent.ParticipantConnected, (participant) => {
         console.log('Participant connected:', participant.identity);
       });
@@ -37,14 +40,20 @@ export const useLiveKit = (): UseLiveKit => {
       setIsConnected(true);
     } catch (error) {
       console.error('Failed to connect to room:', error);
+      setIsConnected(false);
     }
   };
 
   const disconnectFromRoom = async (): Promise<void> => {
     if (currentRoom) {
-      await currentRoom.disconnect();
-      setCurrentRoom(null);
-      setIsConnected(false);
+      try {
+        console.log("Disconnecting from room...");
+        await currentRoom.disconnect();
+        setCurrentRoom(null);
+        setIsConnected(false);
+      } catch (error) {
+        console.error('Failed to disconnect from room:', error);
+      }
     }
   };
 
