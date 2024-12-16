@@ -1,24 +1,31 @@
-"use client";
 import Sidebar from "@/components/Home/Sidebar";
-import { useState } from "react";
+import NotAuthenticated from "@/components/NotAuthenticated";
+import { auth } from "@/auth";
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
-export default function Layout({ children }: LayoutProps) {
+export default async function Layout({ children }: LayoutProps) {
+  const session = await auth();
 
-  
+  console.log("Session", session);
 
   return (
-    <div className="bg-gray-800 text-gray-100 h-screen w-screen flex overflow-hidden">
-      {/* Sidebar */}
-      <Sidebar />
-      
-      {/* Contenido del hijo */}
-      <div className="flex flex-col flex-1">
-        {children}
-      </div>
+    <div className="w-screen h-screen bg-[rgb(17,24,40)]">
+      {session === null ? (
+        <div className="w-full h-full">
+          <NotAuthenticated />
+        </div>
+      ) : (
+        <div className="flex h-full w-full">
+          {/* Sidebar */}
+          <Sidebar />
+
+          {/* Contenido */}
+          <div className="flex-1 flex flex-col">{children}</div>
+        </div>
+      )}
     </div>
   );
 }

@@ -33,11 +33,12 @@ const NotAuthenticated: React.FC = () => {
   return (
     <div
       ref={containerRef}
-      className="relative min-h-screen flex flex-col items-center justify-center text-white px-6 text-center overflow-hidden"
+      className="relative h-screen flex flex-col items-center justify-center text-white px-6 text-center"
     >
+      {/* Video en pantalla completa */}
       <video
         ref={videoRef}
-        className="absolute top-0 left-0 w-full h-full object-cover"
+        className="absolute top-0 left-0 w-full h-full object-cover z-0"
         autoPlay
         loop
         muted
@@ -46,6 +47,8 @@ const NotAuthenticated: React.FC = () => {
       >
         Tu navegador no soporta videos HTML5.
       </video>
+
+      {/* Contenido superpuesto */}
       <div ref={textRef} className="relative z-10">
         <h1 className="text-4xl md:text-6xl font-bold mb-4">
           No estás autenticado

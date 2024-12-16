@@ -20,18 +20,14 @@ import { SetStateAction, useEffect, useRef, useState, useTransition } from "reac
 import { signOut } from "next-auth/react";
 import { handlerSession } from "@/actions/handlerSession-action";
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/modal";
-import { Button } from "@nextui-org/react";
+import { avatar, Button } from "@nextui-org/react";
 import { useServerStore } from "@/lib/store";
-import VoiceChannels from "@/components/VoiceChannels";
-import { VoiceChannel as ModelVoiceChannels } from "@/models/VoiceChannels";
+// import VoiceChannels from "@/components/VoiceChannels";
+// import { VoiceChannel as ModelVoiceChannels } from "@/models/VoiceChannels";
 import  EmojiPicker from "emoji-picker-react";
+import Image from "next/image";
+import { string } from "zod";
 
-interface Chat {
-  user: string;
-  time: string;
-  avatarColor: string;
-  message: string;
-}
 
 const CustomDiscordUI = () => {
 
@@ -39,14 +35,41 @@ const CustomDiscordUI = () => {
   const [selectedUser, setSelectedUser] = useState<{ name: string; info: string, avatar: string } | null>(null);
   const [modalPosition, setModalPosition] = useState<{ top: number; left: number } | null>(null);
 
+
+  interface User {
+    email?: string;
+    name?: string;
+    image?: string;
+    id?: string;
+  }
+
+
+  interface Chat {
+    user: string;
+    time: string;
+    avatarColor: string;
+    message: string;
+    server: string;
+  }
+
+
+  interface Participants {
+    username: string;
+    avatarColor: string;
+    email: string;
+  }
+
   const [currentChannel, setCurrentChannel] = useState("general");
   const [channelType, setChannelType] = useState("text");
   const [chats, setChats] = useState<Chat[]>([]);
   const [message, setMessage] = useState("");
-  const [participants, setParticipants] = useState<string[]>([]);
+  const [participants, setParticipants] = useState<Participants[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [socket, setSocket] = useState<Socket | null>(null);
-  const [userEmail, setUserEmail] = useState("");
+  const [user, setUser] = useState<User>({});
+  const [disconnectedParticipants, setDisconnectedParticipants] = useState<
+  Participants[]
+  >([]);
   const [isPending, startTransition] = useTransition();
   const { currentServer } = useServerStore();
 
@@ -63,39 +86,53 @@ const CustomDiscordUI = () => {
 
   useEffect(() => {
     startTransition(async () => {
-      const email = await handlerSession();
-      setUserEmail(email!);
+      const sessionUser = (await handlerSession()) as User;
+      if (sessionUser) {
+        setUser(sessionUser);
+      }
     });
   }, []);
 
   useEffect(() => {
+    if (!user?.id) return; // Esperar a tener ID del usuario para conectar el socket
+
     const newSocket = io("http://localhost:4000", {
       auth: {
-        userEmail,
+        id: user.id,
       },
       transports: ["websocket"],
     });
 
     setSocket(newSocket);
 
-    console.log(currentServer);
-
     newSocket.on("connect", () => {
       console.log("Conectado al servidor WebSocket");
+      // Unirse a la sala del servidor actual
+      if (currentServer) {
+        newSocket.emit("join", { server: currentServer });
+      }
     });
 
     newSocket.on("receiveMessage", (chatMessage: Chat) => {
-      setChats((prevChats) => [...prevChats, chatMessage]);
+      // Verificar que el mensaje pertenece al servidor actual
+      if (chatMessage.server === currentServer) {
+        setChats((prevChats) => [...prevChats, chatMessage]);
+      }
     });
 
-    newSocket.on("participants", (users: string[]) => {
+    newSocket.on("participants", (users: Participants[]) => {
+      console.log("Participantes conectados", users);
       setParticipants(users);
+    });
+
+    newSocket.on("disconnectedParticipants", (users: Participants[]) => {
+      setDisconnectedParticipants(users);
     });
 
     return () => {
       newSocket.disconnect();
     };
-  }, [isPending, userEmail]);
+  }, [isPending, user, currentServer]);
 
   const sendMessage = () => {
     if (socket && message.trim() !== "") {
@@ -109,7 +146,7 @@ const CustomDiscordUI = () => {
   };
 
   const channels = {
-    text: ["general", "proyectos", "equipo", "off-topic"],
+    text: ["general"],
     voice: [
       { name: "general", id: "1" },
       { name: "proyectos", id: "2" },
@@ -126,24 +163,34 @@ const CustomDiscordUI = () => {
     setChannelType(type);
   };
 
-  const handleUserClick = (user: string, event: React.MouseEvent<HTMLDivElement>) => {
-    console.log("Usuario seleccionado:", user);
-    const userInfo = {
-      name: user,
-      info: `Información adicional sobre ${user}`,
-      avatar : `https://api.adorable.io/avatars/256/${user}.png`,
-      
+  const handleUserClick = (username: string) => {
+      const userInfo = {
+        name: username,
+        info: `Información adicional sobre ${username}`,
+        avatar: "default-avatar-url", // Replace with actual avatar URL if available
+      };
+      setSelectedUser(userInfo);
+      setIsModalOpen(true);
     };
-    setSelectedUser(userInfo);
-    setIsModalOpen(true);
-
-    const rect = event.currentTarget.getBoundingClientRect();
-    setModalPosition({ top: rect.top, left: rect.left });
-  };
 
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedUser(null);
+  };
+
+  const displayUserName = () => {
+    if (!user?.name) return "Usuario";
+    // Si el nombre es largo, tomar la primera palabra
+    if (user.name.length >= 9) {
+      return user.name.split(" ")[0];
+    }
+    return user.name;
+  };
+
+  const displayUserId = () => {
+    if (!user?.id) return "#00000";
+    // Tomar primeros 5 caracteres del id
+    return "#" + user.id.slice(0, 5);
   };
 
   const handleProfileUpdate = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -216,8 +263,11 @@ const CustomDiscordUI = () => {
                 </div>
               ))}
             </div>
-            {/* Voice Channels */}
-            <VoiceChannels channels={channels.voice} />
+            {/* Voice Channels
+            
+              <VoiceChannels channels={channels.voice} />
+            */}
+            
           </div>
 
           {/* User Info */}
@@ -386,25 +436,52 @@ const CustomDiscordUI = () => {
           )}
         </div>
 
-        {/* User List */}
-        <div className="w-60 bg-gray-850 p-4 border-l border-gray-700">
+         {/* User List */}
+         <div className="w-60 bg-gray-850 p-4 border-l border-gray-700">
           <h2 className="text-sm font-bold text-gray-400 mb-2 uppercase">
             Miembros en línea — {participants.length}
           </h2>
           <div className="space-y-2 overflow-y-auto">
-            {participants.map((user, index) => (
+            {participants.map((pUser, index) => (
               <div
                 key={index}
                 className="flex items-center space-x-3 hover:bg-gray-700 p-2 rounded cursor-pointer transition-colors duration-200"
-                onClick={(event) => handleUserClick(user, event)}
+                onClick={() => handleUserClick(user.id!)}
               >
                 <div className="relative">
-                  <div className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center text-white font-bold">
-                    {user.charAt(0).toUpperCase()}
+                  <div className={`w-8 h-8 ${pUser.avatarColor} rounded-full flex items-center justify-center text-white font-bold`}>
+                    {pUser.username?.charAt(0).toUpperCase()}
                   </div>
                   <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-gray-850 rounded-full"></span>
                 </div>
-                <span className="text-sm">{user}</span>
+                <span className="text-sm">
+                  {pUser.username?.length! >= 9
+                    ? pUser.username?.split(" ")[0]
+                    : pUser.username}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {/* Miembros desconectados */}
+          <h2 className="text-sm font-bold text-gray-400 mt-4 mb-2 uppercase">
+            Miembros desconectados — {disconnectedParticipants.length}
+          </h2>
+          <div className="space-y-2 overflow-y-auto">
+            {disconnectedParticipants.map((dUser, index) => (
+              <div
+                key={index}
+                className="flex items-center space-x-3 p-2 rounded"
+              >
+                <div className="relative">
+                  <div className={`w-8 h-8 ${dUser.avatarColor} rounded-full flex items-center justify-center text-white font-bold`}>
+                    {dUser.username?.charAt(0).toUpperCase()}
+                  </div>
+                  <span className="absolute bottom-0 right-0 w-3 h-3 bg-gray-500 border-2 border-gray-850 rounded-full"></span>
+                </div>
+                <span className="text-sm text-gray-400">{dUser.username?.length! >= 9
+                    ? dUser.username?.split(" ")[0]
+                    : dUser.username}</span>
               </div>
             ))}
           </div>
@@ -453,7 +530,7 @@ const CustomDiscordUI = () => {
             {(onClose) => (
               <>
                 <ModalHeader className="flex flex-col gap-1 text-center">
-                  <img
+                  <Image
                     src={selectedUser.avatar}
                     alt={`${selectedUser.name} avatar`}
                     width={64}

@@ -1,3 +1,5 @@
+'use client'
+
 import { useServerStore } from "@/lib/store";
 
 import { PlusCircle } from "lucide-react";
@@ -13,10 +15,6 @@ const Sidebar: React.FC = () => {
   }
 
   const servers = [
-    {
-      name: "Comunidad de Estudio",
-      icon: "📚",
-    },
     {
       name: "Comunidad de Programadores",
       icon: "💻",
@@ -40,6 +38,7 @@ const Sidebar: React.FC = () => {
   ];
 
   const handleServerChange = (server: Servers) => {
+    router.push(`/home`);
     setCurrentServer(server.name);
   };
 
@@ -47,6 +46,16 @@ const Sidebar: React.FC = () => {
     <>
       {/* Server List Sidebar */}
       <div className="flex flex-col bg-gray-900 w-16 py-3 items-center space-y-2 border-r border-gray-700">
+        {/* Inicio */}
+        <div
+          className={`${
+            currentServer === "Inicio" ? "bg-indigo-500" : "bg-gray-700"
+          } h-12 w-12 rounded-full flex items-center justify-center text-2xl hover:bg-indigo-500 cursor-pointer transition-colors duration-200`}
+          onClick={() => router.push("/home/welcome")}
+        >
+          🏠
+        </div>
+
         {/* Servers */}
         {servers.map((server, index) => (
           <div
