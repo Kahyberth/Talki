@@ -95,48 +95,56 @@ const CustomDiscordUI = () => {
 
   useEffect(() => {
     if (!user?.id) return; // Esperar a tener ID del usuario para conectar el socket
-
+  
     const newSocket = io("http://localhost:4000", {
       auth: {
         id: user.id,
       },
       transports: ["websocket"],
     });
-
+  
     setSocket(newSocket);
-
+  
     newSocket.on("connect", () => {
       console.log("Conectado al servidor WebSocket");
+  
       // Unirse a la sala del servidor actual
       if (currentServer) {
         newSocket.emit("join", { server: currentServer });
+        setChats([]); // Limpiar el chat al unirse a un nuevo servidor
       }
     });
-
-    newSocket.on("receiveMessage", (chatMessage: Chat) => {
-      // Verificar que el mensaje pertenece al servidor actual
-      if (chatMessage.server === currentServer) {
-        setChats((prevChats) => [...prevChats, chatMessage]);
-      }
+  
+    newSocket.on("message", (data) => {
+      setChats((prevChats) => [
+        ...prevChats,
+        {
+          user: data.username,
+          time: data.time,
+          avatarColor: "bg-indigo-500",
+          message: data.message,
+          server: currentServer,
+        },
+      ]);
     });
-
-    newSocket.on("participants", (users: Participants[]) => {
-      console.log("Participantes conectados", users);
+  
+    newSocket.on("participants", (users) => {
       setParticipants(users);
     });
-
-    newSocket.on("disconnectedParticipants", (users: Participants[]) => {
+  
+    newSocket.on("disconnectedParticipants", (users) => {
       setDisconnectedParticipants(users);
     });
-
+  
     return () => {
       newSocket.disconnect();
     };
-  }, [isPending, user, currentServer]);
+  }, [isPending, user, currentServer]); // Escucha cambios en currentServer
+  
 
   const sendMessage = () => {
     if (socket && message.trim() !== "") {
-      socket.emit("sendMessage", { message });
+      socket.emit("message", { message, server: currentServer });
       setMessage("");
     }
   };
@@ -275,11 +283,11 @@ const CustomDiscordUI = () => {
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <div className="bg-indigo-500 w-8 h-8 rounded-full flex items-center justify-center text-white">
-                  U
+                  {user.name?.charAt(0).toUpperCase()}
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-sm font-semibold">Usuario</span>
-                  <span className="text-xs text-gray-400">#1234</span>
+                  <span className="text-sm font-semibold">{user.name?.split(' ')[0]}</span>
+                  <span className="text-xs text-gray-400">#{user.id?.slice(0, 4)}</span>
                 </div>
               </div>
               <div className="flex items-center space-x-1">

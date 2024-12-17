@@ -11,6 +11,7 @@ const servers = [
     members: "1,222,770 miembros",
     image: "/image/server/estudio.jpg",
     badge: "¡Nuevo!",
+    tag: "Estudio",
   },
   {
     name: "Comunidad de Programadores",
@@ -20,6 +21,7 @@ const servers = [
     members: "2,007,239 miembros",
     image: "/image/server/programacion.jpg",
     badge: "Popular",
+    tag: "Programación",
   },
   {
     name: "Comunidad General",
