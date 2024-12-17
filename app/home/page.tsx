@@ -47,6 +47,8 @@ const CustomDiscordUI = () => {
   const [profileData, setProfileData] = useState({ name: "", avatar: "" });
   const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
 
+  const [token, setToken] = useState("");
+
   // LiveKit Server
   const [livekitUrl, setLivekitUrl] = useState("wss://talki.venecraftserver.top");
 
@@ -208,7 +210,7 @@ const CustomDiscordUI = () => {
             {/* Text Channels */}
             < TextChannels channels={channels} currentChannel={currentChannel} channelType={channelType} handleChannelChange={handleChannelChange} />
             {/* Voice Channels */}
-            < VoiceChannels channels={channels?.voice} userId={user.id} serverUrl={livekitUrl} backendUrl={backendUrl} />
+            < VoiceChannels channels={channels?.voice} userId={user.name} serverUrl={livekitUrl} backendUrl={backendUrl} handleChannelChange={handleChannelChange} setToken={setToken} currentChannel={currentChannel}/>
             
           </div>
 
@@ -235,7 +237,7 @@ const CustomDiscordUI = () => {
           ) : (
             <>
             {/* Voice Area */}
-            <VoiceArea currentChannel={currentChannel}/>
+            <VoiceArea currentChannel={currentChannel} token={token} serverUrl={livekitUrl}/>
             </>
           )}
         </div>
