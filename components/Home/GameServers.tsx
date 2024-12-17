@@ -1,66 +1,19 @@
+'use client';
+
+import { useServerStore } from "@/lib/store";
 import Image from "next/image";
-import React from "react";
-import { Users } from "react-feather";
+import React, { useEffect } from "react";
 
-const servers = [
-  {
-    name: "Comunidad de Estudio",
-    description:
-      "Bienvenido a la comunidad de estudio de Discord. ¡Aquí puedes encontrar a otros estudiantes y profesores para discutir sobre tus materias favoritas!",
-    online: "484,602 en línea",
-    members: "1,222,770 miembros",
-    image: "/image/server/estudio.jpg",
-    badge: "¡Nuevo!",
-    tag: "Estudio",
-  },
-  {
-    name: "Comunidad de Programadores",
-    description:
-      "Comunidad de programadores de Discord. ¡Conéctate con otros desarrolladores y comparte tus proyectos!",
-    online: "434,955 en línea",
-    members: "2,007,239 miembros",
-    image: "/image/server/programacion.jpg",
-    badge: "Popular",
-    tag: "Programación",
-  },
-  {
-    name: "Comunidad General",
-    description: "¡Bienvenido a la comunidad general de Discord!",
-    online: "333,917 en línea",
-    members: "888,665 miembros",
-    image: "/image/server/general.jpg",
-  },
-  {
-    name: "Comunidad de Juegos",
-    description:
-      "¡Conéctate con otros jugadores y descubre nuevos juegos en la comunidad de juegos de Discord!",
-    online: "331,434 en línea",
-    members: "1,260,046 miembros",
-    image: "/image/server/juegos.jpg",
-    badge: "¡Destacado!",
-  },
-  {
-    name: "Comunidad de Anime",
-    description:
-      "¡Bienvenido a la comunidad de anime de Discord! Conéctate con otros fans del anime y comparte tus series favoritas.",
-    online: "331,434 en línea",
-    members: "1,260,046 miembros",
-    image: "/image/server/anime.jpg",
-    badge: "¡Destacado!",
-  },
 
-  {
-    name: "Comunidad de Peliculas",
-    description:
-      "¡Bienvenido a la comunidad de peliculas de Discord! Conéctate con otros fans del cine y comparte tus peliculas favoritas.",
-    online: "331,434 en línea",
-    members: "1,260,046 miembros",
-    image: "/image/server/peliculas.jpg",
-    badge: "¡Destacado!",
-  },
-];
+
+
+
 
 const GameServers = () => {
+
+  const { servers, fetchServers } = useServerStore();
+
+
   return (
     <div className="bg-gray-800 text-gray-100 h-screen flex flex-col">
       {/* Header */}
@@ -85,7 +38,7 @@ const GameServers = () => {
               {/* Imagen con Overlay */}
               <div className="relative h-48">
                 <Image
-                  src={server.image}
+                  src={"/image/server/juegos.jpg"}
                   alt={server.name}
                   width={400}
                   height={200}
@@ -93,11 +46,9 @@ const GameServers = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent"></div>
                 {/* Badge */}
-                {server.badge && (
                   <div className="absolute top-2 left-2 bg-indigo-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
-                    {server.badge}
+                    {"Nuevo!!!"}
                   </div>
-                )}
               </div>
 
               {/* Contenido */}
@@ -106,15 +57,8 @@ const GameServers = () => {
                   {server.name}
                 </h2>
                 <p className="text-gray-400 text-sm mt-2 line-clamp-2">
-                  {server.description}
+                  {"Servidores de la comunidad 🙌"}
                 </p>
-                <div className="flex justify-between items-center mt-4 text-sm">
-                  <div className="flex items-center space-x-1 text-green-400">
-                    <Users className="h-5 w-5" />
-                    <span>{server.online}</span>
-                  </div>
-                  <span className="text-gray-400">{server.members}</span>
-                </div>
               </div>
 
               {/* Botón */}

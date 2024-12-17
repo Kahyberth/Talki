@@ -25,5 +25,5 @@ export default function Page() {
 
 
 
-  return <WelcomePage userName={user.name?.split(' ')[0]} />;
+  return <WelcomePage userName={user.name?.split(' ')[0] || ''} />;
 }

@@ -70,7 +70,7 @@ export default function AuthComponent() {
         }
         onOpenChange();
         setSuccess(true);
-        router.push("/home");
+        router.push("/home/welcome");
       });
     } else {
       const user = await registerAction({

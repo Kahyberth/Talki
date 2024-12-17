@@ -45,11 +45,10 @@ const CustomDiscordUI = () => {
 
 
   interface Chat {
-    user: string;
-    time: string;
-    avatarColor: string;
+    username: string;
     message: string;
-    server: string;
+    time: string;
+    serverOffset: number;
   }
 
 
@@ -90,6 +89,7 @@ const CustomDiscordUI = () => {
       if (sessionUser) {
         setUser(sessionUser);
       }
+      console.log(currentServer);
     });
   }, []);
 
@@ -99,6 +99,7 @@ const CustomDiscordUI = () => {
     const newSocket = io("http://localhost:4000", {
       auth: {
         id: user.id,
+        serverOffset: 0,
       },
       transports: ["websocket"],
     });
@@ -115,17 +116,18 @@ const CustomDiscordUI = () => {
       }
     });
   
-    newSocket.on("message", (data) => {
+    newSocket.on("message", (data: Chat) => {
+      console.log("Nuevo mensaje", data);
       setChats((prevChats) => [
         ...prevChats,
         {
-          user: data.username,
-          time: data.time,
-          avatarColor: "bg-indigo-500",
+          username: data.username,
           message: data.message,
-          server: currentServer,
+          time: data.time,
+          serverOffset: data.serverOffset,
         },
       ]);
+      (newSocket.auth as { [key: string]: any }).serverOffset = data.serverOffset;
     });
   
     newSocket.on("participants", (users) => {
@@ -177,8 +179,6 @@ const CustomDiscordUI = () => {
         info: `Información adicional sobre ${username}`,
         avatar: "default-avatar-url", // Replace with actual avatar URL if available
       };
-      setSelectedUser(userInfo);
-      setIsModalOpen(true);
     };
 
   const closeModal = () => {
@@ -334,13 +334,14 @@ const CustomDiscordUI = () => {
                 {chats.map((msg, index) => (
                   <div key={index} className="flex items-start space-x-4 group">
                     <div
-                      className={`${msg.avatarColor} w-12 h-12 rounded-full flex items-center justify-center text-white font-bold`}
+                      className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold" 
+                      style={{ backgroundColor: 'rgb(136, 57, 57)' }}
                     >
-                      {msg.user.charAt(0).toUpperCase()}
+                      {msg.username?.charAt(0).toUpperCase()}
                     </div>
                     <div>
                       <p className="text-sm font-semibold">
-                        {msg.user}{" "}
+                        {msg.username}{" "}
                         <span className="text-xs text-gray-500">
                           {msg.time}
                         </span>
