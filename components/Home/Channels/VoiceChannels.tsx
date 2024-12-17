@@ -1,10 +1,17 @@
 'use client';
-import { useLiveKit } from '@/hooks/useLivekitClient';
+import { useLiveKit } from '@/hooks/useLivekitRoom';
 import { VoiceChannel } from '@/models/VoiceChannels';
 import { PlusCircle, PhoneIcon } from 'lucide-react';
 import React, { useState } from 'react';
 
-const VoiceChannels = ({ channels }: { channels: VoiceChannel[] }) => {
+interface VoiceChannelsProps {
+    channels: VoiceChannel[];
+    userId: string | undefined;
+    serverUrl: string;
+    backendUrl: string;
+}
+
+const VoiceChannels: React.FC<VoiceChannelsProps> = ({ channels, userId, serverUrl, backendUrl }) => {
   const [currentChannel, setCurrentChannel] = useState<string | null>(null);
   const { isConnected, connectToRoom, disconnectFromRoom } = useLiveKit();
   const [loading, setLoading] = useState(false);
@@ -15,12 +22,9 @@ const VoiceChannels = ({ channels }: { channels: VoiceChannel[] }) => {
     setCurrentChannel(channel.id);
     setLoading(true);
 
-    const serverUrl = 'ws://192.168.1.80:7880'; // Cambia a tu servidor LiveKit
-    const userId = 'user123'; // Esto debería ser el ID del usuario autenticado (por ejemplo, el ID del usuario del JWT)
-
     try {
       // Paso 1: Solicitar el token al backend
-      const response = await fetch('/api/livekit/generate-token', {
+      const response = await fetch(backendUrl + '/livekit/generate-token', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
