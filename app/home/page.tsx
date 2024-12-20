@@ -237,7 +237,14 @@ const CustomDiscordUI = () => {
           ) : (
             <>
             {/* Voice Area */}
-            <VoiceArea currentChannel={currentChannel} token={token} serverUrl={livekitUrl}/>
+            <VoiceArea currentChannel={currentChannel} token={token} serverUrl={livekitUrl} onDisconnect={() => {
+                            // Llamar a la función handleDisconnect del componente VoiceChannels
+                            const voiceChannel = channels.voice.find(ch => ch.name === currentChannel);
+                            if (voiceChannel) {
+                                setToken("");
+                                setChannelType("text");
+                            }
+                        }}/>
             </>
           )}
         </div>
