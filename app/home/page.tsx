@@ -53,7 +53,7 @@ const CustomDiscordUI = () => {
   const [livekitUrl, setLivekitUrl] = useState("wss://talki.venecraftserver.top");
 
   // Backend Server
-  const [backendUrl, setBackendUrl] = useState("http://localhost:4000");
+  const [backendUrl, setBackendUrl] = useState(`${process.env.NEXT_PUBLIC_WBSOCKET}`);
 
   const handleEmojiClick = (emoji: any) => {
     setMessage((prevMessage) => prevMessage + emoji.emoji);
@@ -73,7 +73,7 @@ const CustomDiscordUI = () => {
   useEffect(() => {
     if (!user?.id) return; // Esperar a tener ID del usuario para conectar el socket
   
-    const newSocket = io("http://localhost:4000", {
+    const newSocket = io(`${process.env.NEXT_PUBLIC_WBSOCKET}`, {
       auth: {
         id: user.id,
       },
