@@ -80,7 +80,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   session: { strategy: "jwt" },
   callbacks: {
     async redirect({ url, baseUrl }) {
-      return "/home";
+      return "/home/welcome";
     },
     async signIn({ user, account, profile }) {
       // Si el usuario inicia sesión con Google

@@ -12,7 +12,7 @@ const WelcomePage: React.FC<WelcomePageProps> = ({ userName }) => {
         {/* Imagen o Ilustración */}
         <div className="w-full md:w-1/2 flex justify-center">
           <Image
-            src="/image/landing.jpg"
+            src="/image/landing1.jpg"
             width={400}
             height={400}
             alt="Welcome Illustration"
